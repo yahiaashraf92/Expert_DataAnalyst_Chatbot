@@ -1,0 +1,8 @@
+pandas
+requests
+numpy
+langchain-core
+pytz
+ipython
+langgraph
+typing-extensions
