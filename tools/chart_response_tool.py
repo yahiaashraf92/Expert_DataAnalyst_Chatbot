@@ -1,24 +1,28 @@
+from typing import Annotated
 from langchain_core.tools import tool
 from langchain_core.prompts import PromptTemplate
 from llm.groq_llm import groq_llm_initializer
+from langgraph.prebuilt import InjectedState
 import re
 
-@tool
-def chart_response_tool(dataset:str,query:str) -> str:
+@tool(return_direct=True)
+def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> str:
     """
-    You are an expert data analyst, you are given a dataset and if the user wants in return response as chart, based on this data answer the users query.
+    use this when the user asks for a data visualization, chart or a graph.
+
 
     Args:
-        dataset (str): data that you must analyze and answer based on it
-        query (str): the query to answer based on the dataset
-    
+        query (str): The user's query to answer.
+        dataset (str): data 
     Returns:
-        str: respone to that query
+        str: return suitable chart for the query
     """
-
+    
+    # Access the dataset from the state
+    dataset = state["dataset"]
 
     chart_prompt = PromptTemplate(
-    input_variables=["query","dataset"],
+    input_variables=["query", "dataset"],
     template="""
     You're a data visualization expert and you use your favourite graphing library chart.js for angular only.
     
@@ -37,24 +41,25 @@ def chart_response_tool(dataset:str,query:str) -> str:
     
     User Query: {query}
     """
-
     )
+
     llm = groq_llm_initializer()
 
     chain = chart_prompt | llm
 
-    
-    response = chain.invoke({"query":query,"dataset":dataset})
+    response = chain.invoke({"query": query, "dataset": dataset})
 
-    # Regular expression to match the content between ```code``` blocks
+    print(response.content)
+
+    """ # Regular expression to match the content between ```code``` blocks
     pattern = r'```(.*?)```'
 
     match = re.search(pattern, response.content, re.DOTALL)
-
-    print(match.group(1).strip())
     
+    print(match.group(1).strip())
+
     if match:
         # Return the extracted code (strip to remove leading/trailing whitespaces)
-        response =  str(match.group(1).strip())
+        return str(match.group(1).strip()) """
     
-    return response
+    return response.content  # Return the full content if no code block is found

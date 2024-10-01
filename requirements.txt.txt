@@ -6,3 +6,8 @@ pytz
 ipython
 langgraph
 typing-extensions
+fastapi
+langchain_core
+dotenv
+langchain_groq
+typing_extensions

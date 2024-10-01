@@ -1,15 +1,17 @@
+from typing import Annotated
 from langchain_core.tools import tool
 from langchain_core.prompts import PromptTemplate
+from langgraph.prebuilt import InjectedState
 from llm.groq_llm import groq_llm_initializer
 
 @tool
-def text_response_tool(dataset:str,query:str) -> str:
+def text_response_tool(query: str, state: Annotated[dict, InjectedState]) -> str:
     """
     You are an expert data analyst, you are given a dataset and if the user wants in return response as text, based on this data answer the users query.
 
     Args:
-        dataset (str): data that you must analyze and answer based on it
         query (str): the query to answer based on the dataset
+        state (InjectedState): The state object containing the dataset.
     
     Returns:
         str: respone to that query
@@ -38,6 +40,6 @@ def text_response_tool(dataset:str,query:str) -> str:
 
     chain = text_prompt | llm
 
-    response = chain.invoke({"query":query,"dataset":dataset})
+    response = chain.invoke({"query":query,"dataset":state["dataset"]})
 
     return response

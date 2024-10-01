@@ -3,10 +3,8 @@ import uuid
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import JSONResponse
 from graph.graphinitializer import Initializer
-from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage
 
-load_dotenv()  # Load environment variables from .env file
 
 app = FastAPI()
 
@@ -53,7 +51,7 @@ async def chat(request: Request, user_id: str):
 
     messages = [HumanMessage(content=query)]
     messages = graph.invoke({"messages": messages,"dataset":session_data[user_id]},config,stream_mode="values")
-    response = messages['messages']
+    response = messages['messages'][-1].content
     return {"response": response}
     
     # Use the classifier chain to determine the response type
