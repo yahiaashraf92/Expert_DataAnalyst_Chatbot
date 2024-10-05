@@ -36,10 +36,12 @@ def text_response_tool(query: str, state: Annotated[dict, InjectedState]) -> str
     """
     )
 
+    state["type"] = "text"
+
     llm = groq_llm_initializer()
 
     chain = text_prompt | llm
 
     response = chain.invoke({"query":query,"dataset":state["dataset"]})
 
-    return response
+    return response.content

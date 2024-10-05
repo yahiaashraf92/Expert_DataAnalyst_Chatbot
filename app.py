@@ -52,7 +52,8 @@ async def chat(request: Request, user_id: str):
     messages = [HumanMessage(content=query)]
     messages = graph.invoke({"messages": messages,"dataset":session_data[user_id]},config,stream_mode="values")
     response = messages['messages'][-1].content
-    return {"response": response}
+    tool_type = messages['messages'][-2].additional_kwargs['tool_calls'][0]['function']['name'].split('_')[0]
+    return {"response": response,"type":tool_type}
     
     # Use the classifier chain to determine the response type
     """ response_type = session_data['classifier_chain'].run(query).strip().lower()

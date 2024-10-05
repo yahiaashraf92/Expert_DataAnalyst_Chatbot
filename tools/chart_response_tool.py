@@ -43,6 +43,8 @@ def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> st
     """
     )
 
+    state["type"] = "chart"
+
     llm = groq_llm_initializer()
 
     chain = chart_prompt | llm
@@ -62,4 +64,4 @@ def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> st
         # Return the extracted code (strip to remove leading/trailing whitespaces)
         return str(match.group(1).strip()) """
     
-    return response.content  # Return the full content if no code block is found
+    return response.content

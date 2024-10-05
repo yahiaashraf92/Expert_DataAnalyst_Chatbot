@@ -14,6 +14,7 @@ from langchain_core.prompts import PromptTemplate
 
 class State(TypedDict):
     messages: Annotated[Sequence[BaseMessage], operator.add]
+    type: str
     dataset: str
 
 memory = MemorySaver()
