@@ -53,8 +53,8 @@ def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> st
 
     print(response.content)
 
-    """ # Regular expression to match the content between ```code``` blocks
-    pattern = r'```(.*?)```'
+    # Regular expression to match the content between ```code``` blocks
+    pattern = r'```typescript(.*?)```'
 
     match = re.search(pattern, response.content, re.DOTALL)
     
@@ -62,6 +62,6 @@ def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> st
 
     if match:
         # Return the extracted code (strip to remove leading/trailing whitespaces)
-        return str(match.group(1).strip()) """
+        return str(match.group(1).strip())
     
     return response.content
