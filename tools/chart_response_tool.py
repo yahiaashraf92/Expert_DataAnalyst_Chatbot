@@ -38,6 +38,7 @@ def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> st
     7. DO NOT include any preamble text. Do not include explanations or prose, respond only with the generated artifact.   
     8. Make the chart or dashboard color theme more impressive.
     9. Follow the user's indications when creating the graph
+    10. follow this format in the response: ```json (code for the chart here) ```
     
     User Query: {query}
     """
@@ -54,7 +55,7 @@ def chart_response_tool(query: str, state: Annotated[dict, InjectedState]) -> st
     print(response.content)
 
     # Regular expression to match the content between ```code``` blocks
-    pattern = r'```typescript(.*?)```'
+    pattern = r'```json(.*?)```'
 
     match = re.search(pattern, response.content, re.DOTALL)
     

@@ -9,6 +9,7 @@ from langgraph.prebuilt import tools_condition
 from tools.chart_response_tool import chart_response_tool
 from tools.text_response_tool import text_response_tool
 from tools.table_response_tool import table_response_tool
+from tools.tavily_response_tool import tavily_response_tool
 from llm.groq_llm import groq_llm_initializer
 from langchain_core.messages import BaseMessage
 from langchain_core.prompts import PromptTemplate
@@ -22,7 +23,7 @@ memory = MemorySaver()
 
 def Initializer():
 
-    tools = [text_response_tool,chart_response_tool,table_response_tool]
+    tools = [tavily_response_tool,text_response_tool,chart_response_tool,table_response_tool]
 
     llm = groq_llm_initializer()
 
